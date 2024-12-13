@@ -178,7 +178,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
             } else if let value = value as? [String: Any?] {
                 let hitTestResult = HitTestResult.fromMap(map: value)!
                 self.nativeLoupeGesture = self.gestureRecognizerWithDescriptionFragment("action=loupeGesture:")
-                
+
                 if sender == self.recognizerForDisablingContextMenuOnLinks,
                    hitTestResult.type.rawValue > HitTestResultType.unknownType.rawValue,
                    hitTestResult.type.rawValue < HitTestResultType.editTextType.rawValue {
@@ -1225,13 +1225,13 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     
     public override func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)? = nil) {
         if let applePayAPIEnabled = options?.applePayAPIEnabled, applePayAPIEnabled {
-            if let completionHandler = completionHandler {
+            if let completionHandler: ((Any?, (any Error)?) -> Void) = completionHandler {
                 completionHandler(nil, nil)
+                }
+                return
             }
-            return
+            super.evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
         }
-        super.evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
-    }
     
     @available(iOS 14.0, *)
     public func evaluateJavaScript(_ javaScript: String, frame: WKFrameInfo? = nil, contentWorld: WKContentWorld, completionHandler: ((Result<Any, Error>) -> Void)? = nil) {
